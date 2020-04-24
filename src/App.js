@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Message from './Message';
 
-
-const App = ({mailBox}) => {
+const App = () => {
 
  
   return (
@@ -21,9 +20,10 @@ const App = ({mailBox}) => {
           <Switch>
             <Route exact path="/">
               <h1>Welcome</h1>
-              <img src={mailBox} alt="mailBox.png" border="0" />
+              <img className="icon" src="https://i.imgur.com/DgMZXbw.png"/>
+              
               <Message />
-              <img src="https://i.imgur.com/aYFTpGO.png"/>
+              <img className="icon" src="https://i.imgur.com/F3NOSvU.png" width="200px"/>
             </Route>
           </Switch>
         </div>
