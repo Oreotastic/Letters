@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="295.319" height="308.409" viewBox="0 0 295.319 308.409">
+  <defs>
+    <path id="path-1" fill-rule="evenodd" d="M61 0h173.5v119H61V0z"/>
+    <path id="path-2" fill-rule="evenodd" d="M148 125h31v168h-31V125z"/>
+    <filter id="filter-3" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="2" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="2.41"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <path id="path-4" fill-rule="evenodd" d="M8 35h105c4.4153202 0 8 3.5846798 8 8v57c0 4.4153202-3.5846798 8-8 8H8c-4.4153202 0-8-3.5846798-8-8V43c0-4.4153202 3.5846798-8 8-8z"/>
+    <filter id="filter-5" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="4.819"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <mask id="mask-6" x="-13.909" y="-9.409" maskContentUnits="userSpaceOnUse" maskUnits="userSpaceOnUse">
+      <rect width="295.319" height="308.409" x="-13.909" y="-9.409" fill="white"/>
+      <use fill="black" xlink:href="#path-4"/>
+    </mask>
+    <path id="path-7" fill-rule="evenodd" d="M1.5 38l59 43 59-43"/>
+    <filter id="filter-8" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="3.614"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <path id="path-9" fill-rule="evenodd" d="M59 119l6.72865173 1.29029543L90.28888889 125 103 119H59z"/>
+    <filter id="filter-10" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="3" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="1.205"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <path id="path-11" fill-rule="evenodd" d="M92.5 5H266v119H92.5V5z"/>
+    <filter id="filter-12" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="2.41"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <filter id="filter-13" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" result="innershadow-1-feGaussianBlur-innershadow" stdDeviation="1.807"/>
+      <feOffset dx="0" dy="1" in="innershadow-1-feGaussianBlur-innershadow" result="innershadow-1-feOffset-innershadow"/>
+      <feComposite in="innershadow-1-feOffset-innershadow" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="innershadow-1-feOffset-innershadow"/>
+      <feColorMatrix in="innershadow-1-feOffset-innershadow" result="innershadow-1-feColorMatrix-innershadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <path id="path-14" fill-rule="evenodd" d="M65 0l25.5 4"/>
+    <filter id="filter-15" width="200%" height="200%" x="-50%" y="-50%" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="2" in="SourceAlpha" result="shadow-1-feOffset-shadow"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation=".602"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <path id="path-16" fill-rule="evenodd" d="M62 0l31.5 5h173l-32-5H62z"/>
+  </defs>
+  <g transform="translate(13.90926022 9.40926022)">
+    <g>
+      <use fill="rgb(172,124,150)" xlink:href="#path-1"/>
+      <use fill-opacity="0" stroke="rgb(100,44,169)" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="4" xlink:href="#path-1"/>
+    </g>
+    <g>
+      <use fill="black" stroke="black" stroke-opacity="0" stroke-width="0" filter="url(#filter-3)" xlink:href="#path-2"/>
+      <use fill="rgb(59,169,198)" xlink:href="#path-2"/>
+    </g>
+    <g>
+      <g>
+        <use fill="black" stroke="black" stroke-width="6" filter="url(#filter-5)" xlink:href="#path-4"/>
+        <use fill="rgb(255,255,255)" xlink:href="#path-4"/>
+        <use fill-opacity="0" stroke="rgb(100,44,169)" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="6" mask="url(#mask-6)" xlink:href="#path-4"/>
+      </g>
+      <g>
+        <use fill="black" fill-opacity="0" stroke="black" stroke-width="4" filter="url(#filter-8)" xlink:href="#path-7"/>
+        <use fill-opacity="0" stroke="rgb(100,44,169)" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="4" xlink:href="#path-7"/>
+      </g>
+    </g>
+    <g>
+      <use fill="black" stroke="black" stroke-width="3" filter="url(#filter-10)" xlink:href="#path-9"/>
+      <use fill="rgb(172,124,150)" xlink:href="#path-9"/>
+      <use fill-opacity="0" stroke="rgb(100,44,169)" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="3" xlink:href="#path-9"/>
+    </g>
+    <g>
+      <use fill="black" stroke="black" stroke-width="4" filter="url(#filter-12)" xlink:href="#path-11"/>
+      <use fill="rgb(255,184,222)" xlink:href="#path-11"/>
+      <use fill="black" filter="url(#filter-13)" xlink:href="#path-11"/>
+      <use fill-opacity="0" stroke="rgb(100,44,169)" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="4" xlink:href="#path-11"/>
+    </g>
+    <g>
+      <use fill="black" fill-opacity="0" stroke="black" stroke-width="3" filter="url(#filter-15)" xlink:href="#path-14"/>
+      <use fill-opacity="0" stroke="rgb(100,44,169)" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="3" xlink:href="#path-14"/>
+    </g>
+    <g>
+      <use fill="rgb(255,184,222)" xlink:href="#path-16"/>
+      <use fill-opacity="0" stroke="rgb(100,44,169)" stroke-linecap="butt" stroke-linejoin="miter" stroke-width="4" xlink:href="#path-16"/>
+    </g>
+  </g>
+</svg>

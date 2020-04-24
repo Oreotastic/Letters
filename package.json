@@ -1,0 +1,41 @@
+{
+  "name": "full_stack_app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "test:dev": "DATABASE_URL=postgres://localhost/university_grace_shopper_test npm run test -- --watch",
+    "build": "webpack",
+    "build:dev": "npm run build -- --watch --mode=development",
+    "start:dev": "nodemon server --ignore dist/ --ignore src/ && npm run build:dev",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "axios": "^0.19.2",
+    "babel-loader": "^8.0.6",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "file-loader": "^6.0.0",
+    "pg": "^7.18.2",
+    "qs": "^6.9.1",
+    "react-router-dom": "^5.1.2",
+    "url-loader": "^4.1.0"
+  },
+  "description": "- npm i - create database university_grace_shopper - npm run start:dev - login with seeded users",
+  "directories": {
+    "test": "test"
+  }
+}
