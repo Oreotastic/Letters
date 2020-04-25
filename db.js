@@ -7,20 +7,42 @@ client.connect();
 
 const sync = async() => {
   const sql = `
-    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
     DROP TABLE IF EXISTS letters;
 
     CREATE TABLE letters(
-      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      id SERIAL,
       message VARCHAR(450)
-    )
+    );
+
+    INSERT INTO letters(message) VALUES('this is a test :)');
   `
 
   await client.query(sql)
 }
 
+const getMessages = async() => {
+  const sql = `SELECT * FROM letters`
+  const response = await client.query(sql)
+  return response.rows
+}
 
+const getMessage = async(id) => {
+  const sql = `SELECT * FROM letters WHERE id = $1`
+  const response = await client.query(sql, [id])
+  console.log(response.rows[0])
+  return response.rows[0]
+}
+
+const createMessage = async(msg) => {
+  const sql = `INSERT INTO letters(message) VALUES($1)`
+  const response = await client.query(sql, [msg])
+  console.log(response.rows)
+  return response.rows[0]
+}
 
 module.exports = {
-  sync
+  sync,
+  getMessages,
+  getMessage,
+  createMessage
 }

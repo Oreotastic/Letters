@@ -1,32 +1,44 @@
 import React, { useState, useEffect } from 'react';
-
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Message from './Message';
+import axios from 'axios'
+import Home from './Home';
 
 const App = () => {
-
  
+  const [letter, setLetter] = useState('')
+  const [myLetter, setMyLetter] = useState('')
+
+  useEffect(() => {
+    axios.get('/api/letters')
+      .then(response => response.data.length)
+      .then(length => {
+        axios.get(`/api/letters/${Number(1)}`)
+        .then(response => console.log(response))
+      })
+  }, [])
+
   return (
     <div>
       <Router>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-          </ul>
-        </nav>
-        <div id="app">
+        <header>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+            </ul>
+          </nav>
+          <h1>Welcome</h1>
+        </header>
+
+        <div id="app" className="container">
           <Switch>
             <Route exact path="/">
-              <h1>Welcome</h1>
-              <img className="icon" src="https://i.imgur.com/DgMZXbw.png"/>
-              
-              <Message />
-              <img className="icon" src="https://i.imgur.com/F3NOSvU.png" width="200px"/>
+              <Home />
             </Route>
           </Switch>
         </div>
+
       </Router>
 
     </div>
