@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Letter = () => {
+const Letter = ({myLetter, setMyLetter}) => {
 
   return (
     <div id="letterbox">
-      <textarea id="letter" type="text" />
+      <textarea id="letter" type="text" value={myLetter} onChange={(el) => setMyLetter(el.target.value)}/>
     </div>
   )
 }

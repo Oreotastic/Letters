@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Message = () => {
+const Message = ({letter}) => {
   return(
     <div id="message">
       <div className="messagebox">
-        <p>Place Holder Text</p>
+        <p>{letter}</p>
       </div>
     </div>
   )

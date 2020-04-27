@@ -1,17 +1,19 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Message from './Message'
 import Letter from './Letter'
 
-const Home = () => {
+const Home = ({letter, createMessage, openLetter}) => {
+
+  const [myLetter, setMyLetter] = useState('')
 
   return (
     <div id="home">
-      <Message />
+      <Message letter={letter}/>
       <div id="icons">
-        <img className="icon mail" src="https://i.imgur.com/ZfdKyDZ.png" alt="envelope"/>
-        <img className="icon mailbox" src="https://i.imgur.com/DgMZXbw.png" alt="mailbox"/>
+        <img className="icon mail" src="https://i.imgur.com/ZfdKyDZ.png" alt="envelope" onClick={openLetter}/>
+        <img className="icon mailbox" src="https://i.imgur.com/DgMZXbw.png" alt="mailbox" onClick={() => createMessage(myLetter)}/>
       </div>
-      <Letter />
+      <Letter myLetter={myLetter} setMyLetter={setMyLetter}/>
     </div>
   )
 }
