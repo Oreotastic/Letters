@@ -8,9 +8,16 @@ client.connect();
 const sync = async() => {
   const sql = `
     DROP TABLE IF EXISTS letters;
+    DROP TABLE IF EXISTS users;
+    
+    CREATE TABLE users(
+      id VARCHAR UNIQUE NOT NULL,
+      name VARCHAR NOT NULL
+    );
 
     CREATE TABLE letters(
       id SERIAL,
+      userId VARCHAR REFERENCES users (id),
       message VARCHAR(450)
     );
 
@@ -29,20 +36,37 @@ const getMessages = async() => {
 const getMessage = async(id) => {
   const sql = `SELECT * FROM letters WHERE id = $1`
   const response = await client.query(sql, [id])
-  console.log(response.rows[0])
   return response.rows[0]
 }
 
 const createMessage = async(msg) => {
   const sql = `INSERT INTO letters(message) VALUES($1)`
   const response = await client.query(sql, [msg])
-  console.log(response.rows)
   return response.rows[0]
+}
+
+const getUser = async(id) => {
+  const sql = `SELECT * FROM users WHERE id = $1` 
+  const response = await client.query(sql, [id])
+  return response.rows[0]
+}
+
+const createUser = async(id, name) => {
+  const existingUser = await getUser(id)
+  if(typeof existingUser === 'undefined') {
+    const sql = `INSERT INTO users(id, name) VALUES($1, $2) returning *`
+    const response = await client.query(sql, [id, name])
+    return response.rows[0]
+  }
+
+  return existingUser
 }
 
 module.exports = {
   sync,
   getMessages,
   getMessage,
-  createMessage
+  createMessage,
+  getUser,
+  createUser
 }

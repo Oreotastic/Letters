@@ -3,7 +3,11 @@ body {
   width: 100%;
   font-family: 'Arimo', sans-serif !important;
   background-color: #011638 !important;
+}
 
+header {
+  background-image: linear-gradient(#302070, #011638);
+  padding: 10px;
 }
 
 .icon {
@@ -16,17 +20,7 @@ body {
   height: 100px;
   margin: 30px;
   transition-duration: 0.3s;
-}
-
-.mailbox {
-  width: 150px;
-  transition-duration: 0.3s;
-}
-
-.mailbox:hover {
-  -webkit-filter: drop-shadow(5px 5px 5px #D65CB1);
-  filter: drop-shadow(0px 0px 5px #D65CB1);
-  transform: scale(1.3);
+  cursor: pointer;
 }
 
 .mail:hover {
@@ -38,6 +32,18 @@ body {
 .mail:active {
   -webkit-filter: drop-shadow(5px 5px 5px #89DAFF);
   filter: drop-shadow(0px 0px 5px #89DAFF);
+}
+
+.mailbox {
+  width: 150px;
+  transition-duration: 0.3s;
+  cursor: pointer;
+}
+
+.mailbox:hover {
+  -webkit-filter: drop-shadow(5px 5px 5px #D65CB1);
+  filter: drop-shadow(0px 0px 5px #D65CB1);
+  transform: scale(1.3);
 }
 
 .mailbox:active {
@@ -54,23 +60,21 @@ body {
   justify-items: center;
 }
 
-header {
-  background-image: linear-gradient(#302070, #011638);
-  padding: 10px;
-}
-
 #message {
-  width: 20vw;
+  width: 40vw;
   height: 20vw;
   background: #D698A9;
   text-align: left;
   border-radius: 10px;
   border: 4px solid #D85D7E;
   filter: drop-shadow(0px 0px 10px #D85D7E);
+  min-width: 200px;
+  min-height: 150px;
 }
 
 .messagebox {
   padding: 10px;
+  margin: auto;
 }
 
 #letter {
@@ -90,4 +94,6 @@ header {
   transform: scale(1.1);
   border: 4px solid #D65CB1;
   filter: drop-shadow(0px 0px 10px #89DAFF);
+  width: 30vw;
+  height: 10vw;
 }
