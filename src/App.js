@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import axios from 'axios'
 import Home from './Home'
 import Login from './Login'
+import Profile from './Profile'
 
 const App = () => {
  
-  const [letter, setLetter] = useState('')
+  const [letter, setLetter] = useState({})
   const [user, setUser] = useState('')
+  const [replies, setReplies] = useState([])
+  const [myLetter, setMyLetter] = useState('')
 
   useEffect(() => {
     axios.get('/api/letters')
@@ -15,26 +18,42 @@ const App = () => {
       .then(length => {
         const id = Math.ceil(Math.random() * length)
         axios.get(`/api/letters/${id}`)
-        .then(response => setLetter(response.data.message))
+        .then(response => setLetter(response.data))
       })
   }, [])
+
+  useEffect(() => {
+    if(user !== '') {
+      axios.get(`/api/replies/${user.id}`)
+        .then(response => setReplies(response.data))
+    }
+  })
 
   useEffect(() => {
     axios.get('/auth/loggedin')
       .then(res => setUser(res.data))
   }, [])
 
-  const createMessage = async(msg) => {
+  const createMessage = async(msg, userId) => {
+    console.log(msg)
     if(msg.split('').length > 10) {
-      axios.post('/api/letters', {msg: msg})
+      axios.post('/api/letters', {msg: msg, userId: userId})
+    }
+  }
+
+  const createReply = async(userId, msgId, reply) => {
+    console.log(reply)
+    if(reply.split('').length > 10) {
+      axios.post('/api/replies', {userId: userId, msgId: msgId, reply: reply})
     }
   }
 
   const openLetter = async() => {
     const total = (await axios.get('/api/letters')).data.length
     const id = Math.ceil(Math.random() * total)
-    const msg = (await axios.get(`/api/letters/${id}`)).data.message
+    const msg = (await axios.get(`/api/letters/${id}`)).data
     setLetter(msg)
+    console.log(msg)
   }
 
   return (
@@ -42,7 +61,6 @@ const App = () => {
       <Router>
         <header>
           <nav>
-            <ul>
               {
                 user === '' ? 
                 <ul>
@@ -56,16 +74,14 @@ const App = () => {
                   :
                 <ul>
                   <li>
-                    <Link to="/login">Login</Link>
+                    <Link to="/profile">Profile</Link>
                   </li>
                   <li>
                     <Link to="/">Home</Link>
                   </li>
                 </ul>
               }
-            </ul>
           </nav>
-          <h1>Welcome</h1>
         </header>
 
         <div id="app" className="container">
@@ -77,16 +93,16 @@ const App = () => {
                 <Login />
               </Route>
               <Route exact path="/home">
-                <Home letter={letter} createMessage={createMessage} openLetter={openLetter}/>
+                <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReply={createReply} user={user}/>
               </Route>
             </Switch>
               :
             <Switch>
-              <Route exact path='/login'>
-                <Login />
+              <Route exact path='/profile'>
+                <Profile myLetter={myLetter} setMyLetter={setMyLetter} user={user} replies={replies} createReply={createReply}/>
               </Route>
               <Route exact path="/">
-                <Home letter={letter} createMessage={createMessage} openLetter={openLetter}/>
+                <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReply={createReply} user={user}/>
               </Route>
             </Switch>
           }
@@ -95,7 +111,7 @@ const App = () => {
       </Router>
 
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
