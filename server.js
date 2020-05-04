@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const db = require('./db');
+const db = require('./db')
 const path = require('path')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
@@ -24,6 +24,7 @@ app.use(cookieSession({
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
+
 
 //init passport 
 app.use(passport.initialize())
@@ -60,7 +61,30 @@ app.get('/api/letters/:id', (req, res, next) => {
 
 app.post('/api/letters', (req, res, next) => {
   const msg = req.body.msg
-  db.createMessage(msg)
+  const userId = req.body.userId
+  db.createMessage(msg, userId)
+    .then(response => res.send(response))
+    .catch(next)
+})
+
+app.post('/api/replies', (req, res, next) => {
+  const reply = req.body.reply
+  const userId = req.body.userId
+  const msgId = req.body.msgId
+  db.createReply(userId, msgId, reply)
+    .then(response => res.send(response))
+    .catch(next)
+})
+
+app.get('/api/replies', (req, res, next) => {
+  db.getReplies()
+    .then(response => res.send(response))
+    .catch(next)
+})
+
+app.get('/api/replies/:id', (req, res, next) => {
+  const myId = req.params.id
+  db.getMyReplies(myId)
     .then(response => res.send(response))
     .catch(next)
 })
@@ -70,6 +94,6 @@ app.get('*', (req, res, next) => {
 })
 db.sync().then(() => {
   app.listen(port, () => {
-    console.log(`listening on port ${port}`);
+    console.log(`listening on port ${port}`)
   });
 });
