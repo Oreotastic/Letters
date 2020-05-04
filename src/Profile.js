@@ -25,7 +25,10 @@ const Profile = ({letter, user, replies, createReply, myLetter, setMyLetter}) =>
                 <p>
                   {reply.replymsg}
                 </p>
-                <img className="icon paper profile-icon" src="https://i.imgur.com/2MT34wZ.png" alt="paper" onClick={() => showTextBox()}/>
+                <img className="icon paper profile-icon" src="https://i.imgur.com/2MT34wZ.png" alt="paper" onClick={() => {
+                  showTextBox()
+                  setSelectedReply(reply)
+              }}/>
               </li>
             )
           })
