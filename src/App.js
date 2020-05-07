@@ -38,6 +38,7 @@ const App = () => {
     console.log(msg)
     if(msg.split('').length > 10) {
       axios.post('/api/letters', {msg: msg, userId: userId})
+      setMyLetter('')
     }
   }
 
@@ -45,6 +46,7 @@ const App = () => {
     console.log(reply)
     if(reply.split('').length > 10) {
       axios.post('/api/replies', {userId: userId, msgId: msgId, reply: reply})
+      setMyLetter('')
     }
   }
 
@@ -65,10 +67,10 @@ const App = () => {
                 user === '' ? 
                 <ul>
                   <li>
-                    <Link to="/">Login</Link>
+                    <Login />
                   </li>
                   <li>
-                    <Link to="/home">Home</Link>
+                    <Link to="/">Home</Link>
                   </li>
                 </ul>
                   :
@@ -85,27 +87,14 @@ const App = () => {
         </header>
 
         <div id="app" className="container">
-
-          {
-          user === '' ? 
-            <Switch>
-              <Route exact path='/'>
-                <Login />
-              </Route>
-              <Route exact path="/home">
-                <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReply={createReply} user={user}/>
-              </Route>
-            </Switch>
-              :
-            <Switch>
-              <Route exact path='/profile'>
-                <Profile myLetter={myLetter} setMyLetter={setMyLetter} user={user} replies={replies} createReply={createReply}/>
-              </Route>
-              <Route exact path="/">
-                <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReply={createReply} user={user}/>
-              </Route>
-            </Switch>
-          }
+          <Switch>
+            <Route exact path='/profile'>
+              <Profile myLetter={myLetter} setMyLetter={setMyLetter} user={user} replies={replies} createReply={createReply}/>
+            </Route>
+            <Route exact path="/">
+              <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReply={createReply} user={user}/>
+            </Route>
+          </Switch>
         </div>
 
       </Router>
