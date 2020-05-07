@@ -26,7 +26,8 @@ const sync = async() => {
       id SERIAL,
       ogUserId VARCHAR REFERENCES users (id),
       msgId VARCHAR NOT NULL,
-      replyMsg VARCHAR NOT NULL
+      replyMsg VARCHAR NOT NULL,
+      read BOOL DEFAULT 'false'
     );
 
     INSERT INTO letters(message) VALUES('this is a test :)');
