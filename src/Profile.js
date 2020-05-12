@@ -1,18 +1,15 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import axios from 'axios'
 
-const Profile = ({letter, user, replies, createReply, myLetter, setMyLetter}) => {
+const Profile = ({setReplies, user, replies}) => {
 
-  const showTextBox = () => {
-    const letterBox = document.getElementById("hiding-letter")
-    letterBox.style.display = "block"
-  }
-
-  const hideTextBox = () => {
-    const letterBox = document.getElementById("hiding-letter")
-    letterBox.style.display = "none"
-  }
-
-  const [selectedReply, setSelectedReply] = useState()
+  useEffect(() => {
+    if(user !== '') {
+      axios.get(`/api/replies/${user.id}`)
+        .then(response => setReplies(response.data))
+    }
+  }, [])
 
   return (
     <div>
@@ -20,25 +17,16 @@ const Profile = ({letter, user, replies, createReply, myLetter, setMyLetter}) =>
       <ul>
         {
           replies.map(reply => {
+            console.log(reply)
+            
             return (
-              <li key={reply.id}>
-                <p>
-                  {reply.replymsg}
-                </p>
-                <img className="icon paper profile-icon" src="https://i.imgur.com/2MT34wZ.png" alt="paper" onClick={() => {
-                  showTextBox()
-                  setSelectedReply(reply)
-              }}/> 
-              <div id="hiding-letter">
-                <textarea id="letter" value={myLetter} onChange={(el) => setMyLetter(el.target.value)}/>
-                <button onClick={() => {
-                    createReply(reply.oguserid, reply.id, myLetter)
-                    hideTextBox()
-                  }}>
-                  Send
-                </button>
-              </div>
-              </li>
+              <Link to={`/thread/${reply.threadid}`}>
+                <li key={reply.id}>
+                  <p>
+                    {reply.replymsg}
+                  </p>
+                </li>
+              </Link>
             )
           })
         }
