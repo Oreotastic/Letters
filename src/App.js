@@ -4,6 +4,7 @@ import axios from 'axios'
 import Home from './Home'
 import Login from './Login'
 import Profile from './Profile'
+import Replies from './Replies'
 
 const App = () => {
  
@@ -13,25 +14,32 @@ const App = () => {
   const [myLetter, setMyLetter] = useState('')
 
   useEffect(() => {
-    axios.get('/api/letters')
+    const abortController = new AbortController()
+    const signal = abortController.signal
+
+    axios.get('/api/letters', {signal: signal})
       .then(response => response.data.length)
       .then(length => {
         const id = Math.ceil(Math.random() * length)
         axios.get(`/api/letters/${id}`)
         .then(response => setLetter(response.data))
       })
+    
+    return () => {
+      abortController.abort()
+    }
   }, [])
 
   useEffect(() => {
-    if(user !== '') {
-      axios.get(`/api/replies/${user.id}`)
-        .then(response => setReplies(response.data))
-    }
-  })
+    const abortController = new AbortController()
+    const signal = abortController.signal
 
-  useEffect(() => {
-    axios.get('/auth/loggedin')
+    axios.get('/auth/loggedin', {signal: signal})
       .then(res => setUser(res.data))
+    
+    return () => {
+      abortController.abort()
+    }
   }, [])
 
   const createMessage = async(msg, userId) => {
@@ -43,10 +51,23 @@ const App = () => {
   }
 
   const createReply = async(userId, msgId, reply) => {
-    console.log(reply)
     if(reply.split('').length > 10) {
       axios.post('/api/replies', {userId: userId, msgId: msgId, reply: reply})
       setMyLetter('')
+    }
+  }
+
+  const createThread = async(msgJSON) => {
+    const thread = (await axios.post('/api/threads', {msgArr: [msgJSON]})).data
+    return thread
+  }
+
+  const createReplyAndThread = async(userId, msgId, reply) => {
+    if(reply.split('').length > 5) {
+      setMyLetter('')
+      const msgJSON = {userId: userId, reply: reply}
+      const thread = await createThread(msgJSON)
+      await axios.post('/api/replies', {threadId: thread.id, userId: userId, msgId: msgId, reply: reply})
     }
   }
 
@@ -55,7 +76,6 @@ const App = () => {
     const id = Math.ceil(Math.random() * total)
     const msg = (await axios.get(`/api/letters/${id}`)).data
     setLetter(msg)
-    console.log(msg)
   }
 
   return (
@@ -65,21 +85,28 @@ const App = () => {
           <nav>
               {
                 user === '' ? 
-                <ul>
-                  <li>
-                    <Login />
-                  </li>
+                <ul className="navbar">
                   <li>
                     <Link to="/">Home</Link>
                   </li>
+                  <li>
+                    <Login />
+                  </li>
                 </ul>
                   :
-                <ul>
+                <ul className="navbar">
                   <li>
                     <Link to="/profile">Profile</Link>
                   </li>
                   <li>
                     <Link to="/">Home</Link>
+                  </li>
+                  <li>
+                    <a href="/auth/logout">
+                      <button>
+                        Logout
+                      </button>
+                    </a>
                   </li>
                 </ul>
               }
@@ -89,10 +116,13 @@ const App = () => {
         <div id="app" className="container">
           <Switch>
             <Route exact path='/profile'>
-              <Profile myLetter={myLetter} setMyLetter={setMyLetter} user={user} replies={replies} createReply={createReply}/>
+              <Profile setReplies={setReplies} myLetter={myLetter} setMyLetter={setMyLetter} user={user} replies={replies} createReply={createReply}/>
             </Route>
             <Route exact path="/">
-              <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReply={createReply} user={user}/>
+              <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReplyAndThread={createReplyAndThread} user={user}/>
+            </Route>
+            <Route exact path={`/thread/:id`}>
+              <Replies user={user} createReply={createReply} myLetter={myLetter} setMyLetter={setMyLetter} />
             </Route>
           </Switch>
         </div>

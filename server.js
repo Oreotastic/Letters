@@ -4,11 +4,11 @@ const db = require('./db')
 const path = require('path')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
+
 const passportSetup = require('./config/passport-setup')
 const keys = require('./config/keys')
 
 const port = process.env.PORT || 3000;
-
 
 app.use('/dist', express.static(path.join(__dirname, 'dist')))
 app.use('/assets', express.static(path.join(__dirname, 'assets')))
@@ -27,7 +27,8 @@ app.get('/', (req, res, next) => {
 
 
 //init passport 
-app.use(passport.initialize())
+
+app.use(passport.initialize()) 
 app.use(passport.session())
 
 app.get('/auth/google', passport.authenticate('google', {
@@ -35,7 +36,8 @@ app.get('/auth/google', passport.authenticate('google', {
 }))
 
 app.get('/auth/logout', (req, res, next) => {
-  res.send('logged out')
+  req.logout()
+  res.redirect('/')
 })
 
 app.get('/auth/loggedin', (req, res, next) => {
@@ -45,6 +47,8 @@ app.get('/auth/loggedin', (req, res, next) => {
 app.get('/auth/google/redirect', passport.authenticate('google'), (req, res, next) => {
   res.redirect('/')
 })
+
+//End of passport setup 
 
 app.get('/api/letters', (req, res, next) => {
   db.getMessages()
@@ -71,7 +75,8 @@ app.post('/api/replies', (req, res, next) => {
   const reply = req.body.reply
   const userId = req.body.userId
   const msgId = req.body.msgId
-  db.createReply(userId, msgId, reply)
+  const threadId = req.body.threadId
+  db.createReply(threadId, userId, msgId, reply)
     .then(response => res.send(response))
     .catch(next)
 })
@@ -85,6 +90,26 @@ app.get('/api/replies', (req, res, next) => {
 app.get('/api/replies/:id', (req, res, next) => {
   const myId = req.params.id
   db.getMyReplies(myId)
+    .then(response => res.send(response))
+    .catch(next)
+})
+
+app.get('/api/threads', (req, res, next) => {
+  db.getThreads()
+    .then(response => res.send(response))
+    .catch(next)
+})
+
+app.get('/api/threads/:id', (req, res, next) => {
+  const id = req.params.id
+  db.getThread(id)
+    .then(response => res.send(response))
+    .catch(next)
+})
+
+app.post('/api/threads', (req, res, next) => {
+  const msgArr = req.body.msgArr
+  db.createThread(msgArr)
     .then(response => res.send(response))
     .catch(next)
 })
