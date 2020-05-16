@@ -3,9 +3,8 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import Letter from './Letter'
 
-const Replies = ({user, createReply, myLetter, setMyLetter}) => {
+const Replies = ({msgs, setMsgs, user, updateThread, myLetter, setMyLetter}) => {
 
-  const [msgs, setMsgs] = useState([])
   const {id} = useParams()
   
   useEffect(() => {
@@ -18,8 +17,9 @@ const Replies = ({user, createReply, myLetter, setMyLetter}) => {
       <div className="thread-container">
         <ul>
           {
-            msgs.map(reply => {
-              console.log(reply, user)     
+            msgs.map(reply => { 
+              const prevMsg = msgs[msgs.indexOf(reply)-1]
+              
               return (
                 <div className={user.id === reply.userId ? `reply-container reciever` : `reply-container sender`}>
                   <li className="thread-list">
@@ -33,7 +33,8 @@ const Replies = ({user, createReply, myLetter, setMyLetter}) => {
       </div>
       
       <div className="msg-box">
-        <Letter />
+        <Letter myLetter={myLetter} setMyLetter={setMyLetter}/>
+        <img className="icon paper" id="sendReply" src="https://i.imgur.com/2MT34wZ.png" alt="paper" onClick={() => updateThread(id, user.id, myLetter)}/>
       </div>
     </div>
   )

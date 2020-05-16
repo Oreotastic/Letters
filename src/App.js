@@ -10,8 +10,8 @@ const App = () => {
  
   const [letter, setLetter] = useState({})
   const [user, setUser] = useState('')
-  const [replies, setReplies] = useState([])
   const [myLetter, setMyLetter] = useState('')
+  const [msgs, setMsgs] = useState([])
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -43,31 +43,42 @@ const App = () => {
   }, [])
 
   const createMessage = async(msg, userId) => {
-    console.log(msg)
-    if(msg.split('').length > 10) {
+    if(msg !== '') {
       axios.post('/api/letters', {msg: msg, userId: userId})
       setMyLetter('')
     }
   }
 
-  const createReply = async(userId, msgId, reply) => {
-    if(reply.split('').length > 10) {
-      axios.post('/api/replies', {userId: userId, msgId: msgId, reply: reply})
+  const createReply = async(threadId, userId, reply) => {
+    if(reply !== '') {
+      axios.post('/api/replies', {threadId: threadId, sender: user.id, receiver: userId, reply: reply})
       setMyLetter('')
     }
   }
 
-  const createThread = async(msgJSON) => {
-    const thread = (await axios.post('/api/threads', {msgArr: [msgJSON]})).data
+  const updateThread = async(threadId, userId, reply) => {
+    if(reply !== '') {
+      const thread = (await axios.get(`/api/threads/${threadId}`)).data
+      const message = {userId: userId, reply: reply}
+      const msgArr = [...thread.msgs, message]
+      setMsgs(msgArr)
+      const newThread = (await axios.put(`/api/threads/${threadId}`, {msgArr: msgArr})).data
+      await axios.post('/api/replies', {threadId: threadId, sender: user.id, receiver: userId, reply: reply})
+    }
+  }
+
+  const createThread = async(msgArr, sender, receiver) => {
+    const thread = (await axios.post('/api/threads', {msgArr: msgArr, sender: sender, receiver: receiver})).data
     return thread
   }
 
-  const createReplyAndThread = async(userId, msgId, reply) => {
-    if(reply.split('').length > 5) {
+  const createReplyAndThread = async(endMsg, receiver, reply) => {
+    const sender = user.id
+    if(reply !== '') {
       setMyLetter('')
-      const msgJSON = {userId: userId, reply: reply}
-      const thread = await createThread(msgJSON)
-      await axios.post('/api/replies', {threadId: thread.id, userId: userId, msgId: msgId, reply: reply})
+      const msgArr = [{userId: receiver, reply: endMsg}, {userId: sender, reply: reply}]
+      const thread = await createThread(msgArr, sender, receiver)
+      await axios.post('/api/replies', {sender: sender, threadId: thread.id, receiver: receiver, reply: reply})
     }
   }
 
@@ -116,13 +127,13 @@ const App = () => {
         <div id="app" className="container">
           <Switch>
             <Route exact path='/profile'>
-              <Profile setReplies={setReplies} myLetter={myLetter} setMyLetter={setMyLetter} user={user} replies={replies} createReply={createReply}/>
+              <Profile myLetter={myLetter} setMyLetter={setMyLetter} user={user} createReply={createReply}/>
             </Route>
             <Route exact path="/">
               <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReplyAndThread={createReplyAndThread} user={user}/>
             </Route>
             <Route exact path={`/thread/:id`}>
-              <Replies user={user} createReply={createReply} myLetter={myLetter} setMyLetter={setMyLetter} />
+              <Replies msgs={msgs} setMsgs={setMsgs} user={user} updateThread={updateThread} myLetter={myLetter} setMyLetter={setMyLetter} />
             </Route>
           </Switch>
         </div>

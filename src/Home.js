@@ -9,7 +9,7 @@ const Home = ({myLetter, setMyLetter, letter, createMessage, openLetter, createR
       <Message letter={letter.message}/>
       <div id="icons">
         <img className="icon mail" src="https://i.imgur.com/ZfdKyDZ.png" alt="envelope" onClick={openLetter}/>
-        {letter.userid ? <img className="icon paper" src="https://i.imgur.com/2MT34wZ.png" alt="paper" onClick={() => createReplyAndThread(letter.userid, letter.id, myLetter)}/> : null}
+        {letter.userid ? <img className="icon paper" src="https://i.imgur.com/2MT34wZ.png" alt="paper" onClick={() => createReplyAndThread(letter.message, letter.userid, myLetter)}/> : null}
         <img className="icon mailbox" src="https://i.imgur.com/DgMZXbw.png" alt="mailbox" onClick={() => createMessage(myLetter, user.id)}/>
       </div>
       <Letter myLetter={myLetter} setMyLetter={setMyLetter}/>
