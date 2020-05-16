@@ -73,10 +73,10 @@ app.post('/api/letters', (req, res, next) => {
 
 app.post('/api/replies', (req, res, next) => {
   const reply = req.body.reply
-  const userId = req.body.userId
-  const msgId = req.body.msgId
+  const senderId = req.body.sender
+  const receiver = req.body.receiver
   const threadId = req.body.threadId
-  db.createReply(threadId, userId, msgId, reply)
+  db.createReply(threadId, senderId, receiver, reply)
     .then(response => res.send(response))
     .catch(next)
 })
@@ -94,6 +94,20 @@ app.get('/api/replies/:id', (req, res, next) => {
     .catch(next)
 })
 
+app.get('/api/sentThreads/:id', (req, res, next) => {
+  const id = req.params.id
+  db.getSentThreads(id)
+    .then(response => res.send(response))
+    .catch(next)
+})
+
+app.get('/api/receivedThreads/:id', (req, res, next) => {
+  const id = req.params.id
+  db.getReceivedThreads(id)
+    .then(response => res.send(response))
+    .catch(next)
+})
+
 app.get('/api/threads', (req, res, next) => {
   db.getThreads()
     .then(response => res.send(response))
@@ -107,9 +121,19 @@ app.get('/api/threads/:id', (req, res, next) => {
     .catch(next)
 })
 
+app.put('/api/threads/:id', (req, res, next) => {
+  const id = req.params.id 
+  const msgArr = req.body.msgArr
+  db.updateThread(msgArr, id)
+    .then(response => res.send(response))
+    .catch(next)
+})
+
 app.post('/api/threads', (req, res, next) => {
   const msgArr = req.body.msgArr
-  db.createThread(msgArr)
+  const sender = req.body.sender
+  const receiver = req.body.receiver
+  db.createThread(msgArr, sender, receiver)
     .then(response => res.send(response))
     .catch(next)
 })

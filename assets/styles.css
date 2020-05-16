@@ -132,15 +132,15 @@ ul {
 }
 
 .thread-container {
-  height: 30vh;
+  max-height: 50vh;
   margin: 10px 40px;
   border: solid 1px red;
 }
 
 .thread-container ul { 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  max-height: 60vh;
+  display:flex;
+  flex-direction: column;
+  max-height: 50vh;
   overflow: auto;
 }
 
@@ -152,11 +152,14 @@ ul {
 
 .sender {
   background-color: #D65CB1;
+  max-width: 75%;
+  align-self: flex-start;
 }
 
 .reciever {
   background-color: aqua;
-  grid-column-start: 2;
+  max-width: 75%;
+  align-self: flex-end;
 }
 
 .msg-box {
@@ -169,4 +172,9 @@ ul {
   padding: 0;
   margin: 0;
   word-wrap: break-word;
+}
+
+#sendReply {
+  padding-top: 20px;
+  width: 80px;
 }

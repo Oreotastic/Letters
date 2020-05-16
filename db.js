@@ -28,14 +28,16 @@ const sync = async() => {
 
     CREATE TABLE threads(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      sender VARCHAR REFERENCES users (id),
+      receiver VARCHAR REFERENCES users (id),
       msgs json[]
     );
 
     CREATE TABLE replies(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       threadId UUID REFERENCES threads (id),
-      ogUserId VARCHAR REFERENCES users (id),
-      msgId VARCHAR NOT NULL,
+      sender VARCHAR REFERENCES users (id),
+      receiver VARCHAR REFERENCES users (id),
       replyMsg VARCHAR NOT NULL,
       read BOOL DEFAULT 'false'
     );
@@ -80,14 +82,14 @@ const createUser = async(id, name) => {
   return existingUser
 }
 
-const createReply = async(threadId, userId, msgId, msg) => {
-  const sql = `INSERT INTO replies(threadId, ogUserId, msgId, replyMsg) VALUES($1, $2, $3, $4) returning *`
-  const response = await client.query(sql, [threadId, userId, msgId, msg])
+const createReply = async(threadId, sender, receiver, msg) => {
+  const sql = `INSERT INTO replies(threadId, sender, receiver, replyMsg) VALUES($1, $2, $3, $4) returning *`
+  const response = await client.query(sql, [threadId, sender, receiver, msg])
   return response.rows[0]
 }
 
 const getMyReplies = async(id) => {
-  const sql = `SELECT * FROM replies WHERE ogUserId = $1`
+  const sql = `SELECT * FROM replies WHERE sender = $1 OR receiver = $1`
   const response = await client.query(sql, [id])
   return response.rows
 }
@@ -98,9 +100,9 @@ const getReplies = async() => {
   return response.rows
 }
 
-const createThread = async(msgArray) => {
-  const sql = `INSERT INTO threads(msgs) VALUES($1) returning *`
-  const response = await client.query(sql, [msgArray])
+const createThread = async(msgArray, sender, receiver) => {
+  const sql = `INSERT INTO threads(msgs, sender, receiver) VALUES($1, $2, $3) returning *`
+  const response = await client.query(sql, [msgArray, sender, receiver])
   return response.rows[0]
 }
 
@@ -122,6 +124,17 @@ const getThread = async(id) => {
   return response.rows[0]
 }
 
+const getSentThreads = async(sender) => {
+  const sql = `SELECT * FROM threads WHERE sender = $1`
+  const response = await client.query(sql, [sender])
+  return response.rows
+}
+
+const getReceivedThreads = async(receiver) => {
+  const sql = `SELECT * FROM threads WHERE receiver = $1`
+  const response = await client.query(sql, [receiver])
+  return response.rows
+}
 
 module.exports = {
   sync,
@@ -136,5 +149,7 @@ module.exports = {
   createThread, 
   updateThread,
   getThread,
-  getThreads
+  getThreads,
+  getSentThreads,
+  getReceivedThreads
 }
