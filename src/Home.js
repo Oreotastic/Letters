@@ -1,17 +1,18 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Message from './Message'
 import Letter from './Letter'
 
-const Home = () => {
+const Home = ({myLetter, setMyLetter, letter, createMessage, openLetter, createReplyAndThread, user}) => {
 
   return (
     <div id="home">
-      <Message />
+      <Message letter={letter.message}/>
       <div id="icons">
-        <img className="icon mail" src="https://i.imgur.com/ZfdKyDZ.png" alt="envelope"/>
-        <img className="icon mailbox" src="https://i.imgur.com/DgMZXbw.png" alt="mailbox"/>
+        <img className="icon mail" src="https://i.imgur.com/ZfdKyDZ.png" alt="envelope" onClick={openLetter}/>
+        {letter.userid ? <img className="icon paper" src="https://i.imgur.com/2MT34wZ.png" alt="paper" onClick={() => createReplyAndThread(letter.message, letter.userid, myLetter)}/> : null}
+        <img className="icon mailbox" src="https://i.imgur.com/DgMZXbw.png" alt="mailbox" onClick={() => createMessage(myLetter, user.id)}/>
       </div>
-      <Letter />
+      <Letter myLetter={myLetter} setMyLetter={setMyLetter}/>
     </div>
   )
 }
