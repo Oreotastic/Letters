@@ -4,7 +4,8 @@ const db = require('./db')
 const path = require('path')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
-const io = require('socket.io')()
+const io = require('socket.io')
+const http = require('http')
 
 const passportSetup = require('./config/passport-setup')
 const keys = require('./config/keys')
@@ -22,10 +23,30 @@ app.use(cookieSession({
   keys: [keys.cookieSession.cookieKey]
 }))
 
+// Socket.io 
+const server = http.createServer(app)
+const socketIo = io(server)
+
+const getApiAndEmit = (socket) => {
+  const response = new Date()
+  socket.emit("FromAPI", response)
+};
+let interval
+
+socketIo.on('connection', (client) => {
+  console.log('new user connected')
+  if(interval) {
+    clearInterval(interval)
+  }
+  interval = setInterval(() => getApiAndEmit(client), 1000)
+  client.on('disconnect', () => {
+    console.log('Client disconnected')
+    clearInterval(interval)
+  })
+})
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
-
 
 //init passport 
 
@@ -143,13 +164,9 @@ app.get('*', (req, res, next) => {
   res.redirect('/')
 })
 
-// Socket.io 
-io.on('connection', (client) => {
-  console.log('a user connected')
-})
 
 db.sync().then(() => {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`listening on port ${port}`)
   });
 });

@@ -5,6 +5,8 @@ import Home from './Home'
 import Login from './Login'
 import Profile from './Profile'
 import Replies from './Replies'
+import socketIOClient from 'socket.io-client'
+const ENDPOINT = 'http://localhost:3000/'
 
 const App = () => {
  
@@ -12,6 +14,15 @@ const App = () => {
   const [user, setUser] = useState('')
   const [myLetter, setMyLetter] = useState('')
   const [msgs, setMsgs] = useState([])
+  const [response, setResponse] = useState('')
+
+  useEffect(() => {
+    const socket = socketIOClient(ENDPOINT)
+    console.log(socket)
+    socket.on("FromAPI", data => {
+      setResponse(data)
+    })
+  }, [])
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -94,6 +105,7 @@ const App = () => {
       <Router>
         <header>
           <nav>
+            <p>It's <time dateTime={response}>{response}</time></p>
               {
                 user === '' ? 
                 <ul className="navbar">
