@@ -1,6 +1,7 @@
 const pg = require('pg');
+const keys = require('./config/keys')
 
-const conString = "postgres://gkvozrtq:Uvi4_TPGyJ6Z_pOAyseVV3T71I9QNeKe@drona.db.elephantsql.com:5432/gkvozrtq" //Can be found in the Details page
+const conString = keys.conString.conString
 const client = new pg.Client(conString);
 
 client.connect();

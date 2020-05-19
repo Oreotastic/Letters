@@ -134,7 +134,8 @@ ul {
 .thread-container {
   max-height: 50vh;
   margin: 10px 40px;
-  border: solid 1px red;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px #89DAFF;
 }
 
 .thread-container ul { 
@@ -165,6 +166,7 @@ ul {
 .msg-box {
   text-align: center;
   top: 0;
+  margin-top: 30px;
 }
 
 .reply {
