@@ -10,7 +10,7 @@ const Replies = ({msgs, setMsgs, user, updateThread, myLetter, setMyLetter}) => 
 
   const ENDPOINT = 'http://localhost:3000/'
   const [room, setRoom] = useState('')
-  
+
   useEffect(() => {
     axios.get(`/api/threads/${id}`)
       .then(response => setMsgs(response.data.msgs))
@@ -28,12 +28,15 @@ const Replies = ({msgs, setMsgs, user, updateThread, myLetter, setMyLetter}) => 
   socket.on('jointhread', (data) => {
     console.log(data)
   })
+
   socket.on('chat message', (room, msg, userId) => {
     if(userId !== user.id) {
       console.log(room, msg, userId, 'this should be on the browser')
       setMsgs([...msgs, {userId: userId, reply: msg}])
+      const messageBody = document.querySelector('.thread-container ul');
+      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
     }
-    
   })
 
   const socketEmit = (msg) => {
@@ -43,6 +46,8 @@ const Replies = ({msgs, setMsgs, user, updateThread, myLetter, setMyLetter}) => 
     }
   }
 
+
+
   return (
     <div>
       <div className="thread-container">
@@ -50,16 +55,14 @@ const Replies = ({msgs, setMsgs, user, updateThread, myLetter, setMyLetter}) => 
           {
             msgs.map(reply => { 
               const prevMsg = msgs[msgs.indexOf(reply)-1]
-              
               return (
                 <div className={user.id === reply.userId ? `reply-container reciever` : `reply-container sender`}>
-                  <li className="thread-list">
                     <p className="reply" >{reply.reply}</p>
-                  </li>
                 </div>
               )         
             })
           }
+          <li id="anchor"></li>
         </ul>
       </div>
       

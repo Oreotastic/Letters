@@ -141,8 +141,20 @@ ul {
 .thread-container ul { 
   display:flex;
   flex-direction: column;
+  -ms-flex-direction: column;
   max-height: 50vh;
   overflow: auto;
+  padding: 10px;
+  
+}
+
+.thread-container ul * { 
+  overflow-anchor: none;
+}
+
+#anchor {
+  overflow-anchor: auto;
+  height: 1px;
 }
 
 .reply-container {

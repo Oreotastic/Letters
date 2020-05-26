@@ -64,6 +64,8 @@ const App = () => {
       const message = {userId: userId, reply: reply}
       const msgArr = [...thread.msgs, message]
       setMsgs(msgArr)
+      const messageBody = document.querySelector('.thread-container ul');
+      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
       const newThread = (await axios.put(`/api/threads/${threadId}`, {msgArr: msgArr})).data
       await axios.post('/api/replies', {threadId: threadId, sender: user.id, receiver: userId, reply: reply})
     }
