@@ -12,6 +12,8 @@ const App = () => {
   const [user, setUser] = useState('')
   const [myLetter, setMyLetter] = useState('')
   const [msgs, setMsgs] = useState([])
+  
+  const ENDPOINT = 'http://localhost:3000/'
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -133,7 +135,7 @@ const App = () => {
               <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReplyAndThread={createReplyAndThread} user={user}/>
             </Route>
             <Route exact path={`/thread/:id`}>
-              <Replies msgs={msgs} setMsgs={setMsgs} user={user} updateThread={updateThread} myLetter={myLetter} setMyLetter={setMyLetter} />
+              <Replies msgs={msgs} setMsgs={setMsgs} user={user} updateThread={updateThread} myLetter={myLetter} setMyLetter={setMyLetter}/>
             </Route>
           </Switch>
         </div>
