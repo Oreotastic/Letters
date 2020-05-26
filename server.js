@@ -4,6 +4,7 @@ const db = require('./db')
 const path = require('path')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
+const io = require('socket.io')()
 
 const passportSetup = require('./config/passport-setup')
 const keys = require('./config/keys')
@@ -141,6 +142,12 @@ app.post('/api/threads', (req, res, next) => {
 app.get('*', (req, res, next) => {
   res.redirect('/')
 })
+
+// Socket.io 
+io.on('connection', (client) => {
+  console.log('a user connected')
+})
+
 db.sync().then(() => {
   app.listen(port, () => {
     console.log(`listening on port ${port}`)
