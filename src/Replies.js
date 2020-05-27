@@ -8,7 +8,7 @@ const Replies = ({msgs, setMsgs, user, updateThread, myLetter, setMyLetter}) => 
 
   const {id} = useParams()
 
-  const ENDPOINT = 'http://localhost:3000/'
+  const ENDPOINT = 'http://hidden-basin-38095.herokuapp.com/'
   const [room, setRoom] = useState('')
 
   useEffect(() => {

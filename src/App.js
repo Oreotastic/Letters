@@ -13,7 +13,7 @@ const App = () => {
   const [myLetter, setMyLetter] = useState('')
   const [msgs, setMsgs] = useState([])
   
-  const ENDPOINT = 'http://localhost:3000/'
+  const ENDPOINT = 'http://hidden-basin-38095.herokuapp.com/'
 
   useEffect(() => {
     const abortController = new AbortController()
