@@ -8,6 +8,8 @@ import Replies from './Replies'
 import socketIOClient from 'socket.io-client'
 const ENDPOINT = 'http://localhost:3000/'
 
+const socket = socketIOClient(ENDPOINT)
+
 const App = () => {
  
   const [letter, setLetter] = useState({})
@@ -15,6 +17,7 @@ const App = () => {
   const [myLetter, setMyLetter] = useState('')
   const [msgs, setMsgs] = useState([])
   const [response, setResponse] = useState('')
+  const [room, setRoom] = useState('')
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT)
@@ -52,6 +55,17 @@ const App = () => {
       abortController.abort()
     }
   }, [])
+
+  socket.emit('jointhread', room)
+  socket.on('jointhread', (data) => {
+    console.log(data)
+  })
+  socket.on('chat message', (room, msg, userId) => {
+    if(userId !== user.id) {
+      console.log(room, msg, userId, 'this should be on the browser')
+      setMsgs([...msgs, {userId: userId, reply: msg}])
+    }
+  })
 
   const createMessage = async(msg, userId) => {
     if(msg !== '') {
