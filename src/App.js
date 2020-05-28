@@ -7,7 +7,6 @@ import Login from './Login'
 import Profile from './Profile'
 import Replies from './Replies'
 import socketIOClient from 'socket.io-client'
-import msgpack from 'msgpack5'
 
 const ENDPOINT = 'http://localhost:3000/'
 
