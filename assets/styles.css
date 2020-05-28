@@ -93,6 +93,8 @@ ul {
   filter: drop-shadow(0px 0px 10px #D85D7E);
   min-width: 200px;
   min-height: 150px;
+  position: relative;
+  z-index: 1;
 }
 
 .messagebox {
@@ -119,6 +121,8 @@ ul {
   filter: drop-shadow(0px 0px 10px #89DAFF);
   width: 30vw;
   height: 10vw;
+  min-width: 300px;
+  min-height: 150px;
 }
 
 .profile-icon {
@@ -194,8 +198,19 @@ ul {
 }
 
 .progress-circle {
-  margin: 10px auto;
   filter: drop-shadow(0px 0px 2px rgb(219, 242, 253));
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  z-index: 100;
+  width: 70px !important;
+  height: 70px !important;
 }
 
 .hidden {
@@ -204,4 +219,36 @@ ul {
 
 #letterbox {
   margin: 20px;
+}
+
+
+@media only screen and (max-width: 500px) {
+
+  #message {
+    width: 80vw;
+    height: 50vw;
+  }
+
+  #letterbox:focus {
+    margin-top: 20px !important;
+  }
+
+  .icon {
+    width: 75px;
+    height: auto;
+    margin: 0;
+  }
+
+  .mail {
+    margin: 10px;
+  }
+
+  .mailbox {
+    width: 85px;
+    height: auto;
+  }
+
+  .thread-container {
+    margin: 10px;
+  }
 }

@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import Message from './Message'
 import Letter from './Letter'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 const Home = ({myLetter, setMyLetter, letter, createMessage, openLetter, createReplyAndThread, user}) => {
 
@@ -14,7 +13,6 @@ const Home = ({myLetter, setMyLetter, letter, createMessage, openLetter, createR
         <img className="icon mailbox" src="https://i.imgur.com/DgMZXbw.png" alt="mailbox" onClick={() => createMessage(myLetter, user.id)}/>
       </div>
       <Letter myLetter={myLetter} setMyLetter={setMyLetter}/>
-      <CircularProgress className="progress-circle hidden"/>
     </div>
   )
 }
