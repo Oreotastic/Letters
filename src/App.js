@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import {Button, ThemeProvider, createMuiTheme} from '@material-ui/core'
+import {cyan} from '@material-ui/core/colors'
 import axios from 'axios'
 import Home from './Home'
 import Login from './Login'
 import Profile from './Profile'
 import Replies from './Replies'
 import socketIOClient from 'socket.io-client'
+
 const ENDPOINT = 'http://localhost:3000/'
 
 const socket = socketIOClient(ENDPOINT)
@@ -21,56 +24,42 @@ const App = () => {
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT)
-    console.log(socket)
     socket.on("FromAPI", data => {
       setResponse(data)
     })
   }, [])
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    const signal = abortController.signal
+  socket.emit('jointhread', room)
+  socket.on('chat message', (room, msg, userId) => {
+    if(userId !== user.id) {
+      setMsgs([...msgs, {userId: userId, reply: msg}])
+      const messageBody = document.querySelector('.thread-container ul');
+      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    }
+  })
 
-    axios.get('/api/letters', {signal: signal})
+  useEffect(() => {
+    axios.get('/api/letters')
       .then(response => response.data.length)
       .then(length => {
         const id = Math.ceil(Math.random() * length)
         axios.get(`/api/letters/${id}`)
         .then(response => setLetter(response.data))
       })
-    
-    return () => {
-      abortController.abort()
-    }
   }, [])
 
   useEffect(() => {
-    const abortController = new AbortController()
-    const signal = abortController.signal
-
-    axios.get('/auth/loggedin', {signal: signal})
+    axios.get('/auth/loggedin')
       .then(res => setUser(res.data))
-    
-    return () => {
-      abortController.abort()
-    }
   }, [])
-
-  socket.emit('jointhread', room)
-  socket.on('jointhread', (data) => {
-    console.log(data)
-  })
-  socket.on('chat message', (room, msg, userId) => {
-    if(userId !== user.id) {
-      console.log(room, msg, userId, 'this should be on the browser')
-      setMsgs([...msgs, {userId: userId, reply: msg}])
-    }
-  })
 
   const createMessage = async(msg, userId) => {
     if(msg !== '') {
+      const prog = document.querySelector('.progress-circle')
+      prog.classList.remove('hidden')
       axios.post('/api/letters', {msg: msg, userId: userId})
-      setMyLetter('')
+        .then(() => prog.classList.toggle('hidden'))
+        .then(() => setMyLetter(''))
     }
   }
 
@@ -87,6 +76,8 @@ const App = () => {
       const message = {userId: userId, reply: reply}
       const msgArr = [...thread.msgs, message]
       setMsgs(msgArr)
+      const messageBody = document.querySelector('.thread-container ul');
+      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
       const newThread = (await axios.put(`/api/threads/${threadId}`, {msgArr: msgArr})).data
       await axios.post('/api/replies', {threadId: threadId, sender: user.id, receiver: userId, reply: reply})
     }
@@ -100,49 +91,74 @@ const App = () => {
   const createReplyAndThread = async(endMsg, receiver, reply) => {
     const sender = user.id
     if(reply !== '') {
+      const prog = document.querySelector('.progress-circle')
+      prog.classList.remove('hidden')
       setMyLetter('')
       const msgArr = [{userId: receiver, reply: endMsg}, {userId: sender, reply: reply}]
       const thread = await createThread(msgArr, sender, receiver)
       await axios.post('/api/replies', {sender: sender, threadId: thread.id, receiver: receiver, reply: reply})
+      prog.classList.toggle('hidden')
     }
   }
 
   const openLetter = async() => {
+    const prog = document.querySelector('.progress-circle')
+    prog.classList.remove('hidden')
     const total = (await axios.get('/api/letters')).data.length
     const id = Math.ceil(Math.random() * total)
     const msg = (await axios.get(`/api/letters/${id}`)).data
     setLetter(msg)
+    prog.classList.toggle('hidden')
   }
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#89DAFF'
+      },
+    }
+  })
 
   return (
     <div>
       <Router>
         <header>
           <nav>
-            <p>It's <time dateTime={response}>{response}</time></p>
               {
                 user === '' ? 
                 <ul className="navbar">
                   <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/">
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Home</Button>
+                      </ThemeProvider>
+                    </Link>
                   </li>
                   <li>
-                    <Login />
+                    <Login theme={theme} ThemeProvider={ThemeProvider}/>
                   </li>
                 </ul>
                   :
                 <ul className="navbar">
                   <li>
-                    <Link to="/profile">Profile</Link>
+                    <Link to="/profile">
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Profile</Button>
+                      </ThemeProvider>
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/">
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Home</Button>
+                      </ThemeProvider>
+                    </Link>
                   </li>
                   <li>
                     <a href="/auth/logout">
-                      <button>
-                        Logout
-                      </button>
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Logout</Button>
+                      </ThemeProvider>
                     </a>
                   </li>
                 </ul>
@@ -159,13 +175,11 @@ const App = () => {
               <Home myLetter={myLetter} setMyLetter={setMyLetter} letter={letter} createMessage={createMessage} openLetter={openLetter} createReplyAndThread={createReplyAndThread} user={user}/>
             </Route>
             <Route exact path={`/thread/:id`}>
-              <Replies msgs={msgs} setMsgs={setMsgs} user={user} updateThread={updateThread} myLetter={myLetter} setMyLetter={setMyLetter} />
+              <Replies room={room} setRoom={setRoom} msgs={msgs} setMsgs={setMsgs} user={user} updateThread={updateThread} myLetter={myLetter} setMyLetter={setMyLetter}/>
             </Route>
           </Switch>
         </div>
-
       </Router>
-
     </div>
   )
 }

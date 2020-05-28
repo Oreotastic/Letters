@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import socketIOClient from 'socket.io-client'
 import { useParams } from 'react-router-dom'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Letter from './Letter'
 
 const Replies = ({setRoom, room, msgs, setMsgs, user, updateThread, myLetter, setMyLetter}) => {
@@ -9,11 +10,15 @@ const Replies = ({setRoom, room, msgs, setMsgs, user, updateThread, myLetter, se
   const {id} = useParams()
 
   const ENDPOINT = 'http://localhost:3000/'
-
   
   useEffect(() => {
+    const prog = document.querySelector('.progress-circle')
+    prog.classList.remove('hidden')
     axios.get(`/api/threads/${id}`)
-      .then(response => setMsgs(response.data.msgs))
+      .then(response => {
+        prog.classList.toggle('hidden')
+        setMsgs(response.data.msgs)
+      })
   }, [])
 
   useEffect(() => {
@@ -35,19 +40,18 @@ const Replies = ({setRoom, room, msgs, setMsgs, user, updateThread, myLetter, se
     <div>
       <div className="thread-container">
         <ul>
+        <CircularProgress className="progress-circle hidden"/>
           {
             msgs.map(reply => { 
-              const prevMsg = msgs[msgs.indexOf(reply)-1]
-              
+
               return (
                 <div className={user.id === reply.userId ? `reply-container reciever` : `reply-container sender`}>
-                  <li className="thread-list">
                     <p className="reply" >{reply.reply}</p>
-                  </li>
                 </div>
               )         
             })
           }
+          <li id="anchor"></li>
         </ul>
       </div>
       

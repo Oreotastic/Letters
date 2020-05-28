@@ -4,7 +4,7 @@ const db = require('./db')
 const path = require('path')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
-const io = require('socket.io')
+let io = require('socket.io')
 const http = require('http')
 
 const passportSetup = require('./config/passport-setup')
@@ -23,33 +23,32 @@ app.use(cookieSession({
   keys: [keys.cookieSession.cookieKey]
 }))
 
-// Socket.io 
-const server = http.createServer(app)
-const socketIo = io(server)
-
-const getApiAndEmit = (socket) => {
-  const response = new Date()
-  socket.emit("FromAPI", response)
-};
-let interval
-
-socketIo.on('connection', (client) => {
-  console.log('new user connected')
-  if(interval) {
-    clearInterval(interval)
-  }
-  interval = setInterval(() => getApiAndEmit(client), 1000)
-  client.on('disconnect', () => {
-    console.log('Client disconnected')
-    clearInterval(interval)
-  })
-})
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
 
-//init passport 
+// Socket.io 
+const server = http.createServer(app)
+const socketIo = io(server)
 
+socketIo.on('connection', (client) => {
+  console.log('new user connected')
+  client.on('jointhread', (room) => {
+    client.join(room)
+    socketIo.emit('joined room ' + room)
+  })
+  client.on('chat message', (room, msg, user) => {
+    socketIo.in(room).emit('chat message', room, msg, user)
+    if(user.id !== user) {
+      console.log(room, msg, user)
+    }
+  })
+  client.on('disconnect', () => {
+    console.log('Client disconnected')
+  })
+})
+
+//init passport 
 app.use(passport.initialize()) 
 app.use(passport.session())
 
@@ -70,8 +69,7 @@ app.get('/auth/google/redirect', passport.authenticate('google'), (req, res, nex
   res.redirect('/')
 })
 
-//End of passport setup 
-
+//Routing for database user functions
 app.get('/api/letters', (req, res, next) => {
   db.getMessages()
     .then(response => res.send(response))
@@ -163,7 +161,6 @@ app.post('/api/threads', (req, res, next) => {
 app.get('*', (req, res, next) => {
   res.redirect('/')
 })
-
 
 db.sync().then(() => {
   server.listen(port, () => {

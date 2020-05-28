@@ -6,5 +6,8 @@ module.exports = {
   },
   cookieSession: {
     cookieKey: 'jkfsdklfjklsjdjfksdfskjdadw34545fsdf90'
+  },
+  conString: {
+    conString: "postgres://gkvozrtq:Uvi4_TPGyJ6Z_pOAyseVV3T71I9QNeKe@drona.db.elephantsql.com:5432/gkvozrtq" //Can be found in the Details page
   }
 }
