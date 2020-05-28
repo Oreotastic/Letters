@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import {Button, ThemeProvider, createMuiTheme} from '@material-ui/core'
+import {cyan} from '@material-ui/core/colors'
 import axios from 'axios'
 import Home from './Home'
 import Login from './Login'
@@ -46,8 +48,11 @@ const App = () => {
 
   const createMessage = async(msg, userId) => {
     if(msg !== '') {
+      const prog = document.querySelector('.progress-circle')
+      prog.classList.remove('hidden')
       axios.post('/api/letters', {msg: msg, userId: userId})
-      setMyLetter('')
+        .then(() => prog.classList.toggle('hidden'))
+        .then(() => setMyLetter(''))
     }
   }
 
@@ -79,19 +84,31 @@ const App = () => {
   const createReplyAndThread = async(endMsg, receiver, reply) => {
     const sender = user.id
     if(reply !== '') {
+      const prog = document.querySelector('.progress-circle')
+      prog.classList.remove('hidden')
       setMyLetter('')
       const msgArr = [{userId: receiver, reply: endMsg}, {userId: sender, reply: reply}]
       const thread = await createThread(msgArr, sender, receiver)
       await axios.post('/api/replies', {sender: sender, threadId: thread.id, receiver: receiver, reply: reply})
+      prog.classList.toggle('hidden')
     }
   }
 
   const openLetter = async() => {
+    const prog = document.querySelector('.progress-circle')
+    prog.classList.remove('hidden')
     const total = (await axios.get('/api/letters')).data.length
     const id = Math.ceil(Math.random() * total)
     const msg = (await axios.get(`/api/letters/${id}`)).data
     setLetter(msg)
+    prog.classList.toggle('hidden')
   }
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: cyan,
+    }
+  })
 
   return (
     <div>
@@ -102,25 +119,37 @@ const App = () => {
                 user === '' ? 
                 <ul className="navbar">
                   <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/">
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Home</Button>
+                      </ThemeProvider>
+                    </Link>
                   </li>
                   <li>
-                    <Login />
+                    <Login theme={theme} ThemeProvider={ThemeProvider}/>
                   </li>
                 </ul>
                   :
                 <ul className="navbar">
                   <li>
-                    <Link to="/profile">Profile</Link>
+                    <Link to="/profile">
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Profile</Button>
+                      </ThemeProvider>
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/">
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Home</Button>
+                      </ThemeProvider>
+                    </Link>
                   </li>
                   <li>
                     <a href="/auth/logout">
-                      <button>
-                        Logout
-                      </button>
+                      <ThemeProvider theme={theme}>
+                        <Button variant="contained" color="primary">Logout</Button>
+                      </ThemeProvider>
                     </a>
                   </li>
                 </ul>
