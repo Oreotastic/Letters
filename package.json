@@ -22,6 +22,7 @@
 		"faker": "^4.1.0",
 		"leaflet": "^1.6.0",
 		"minimist": "^1.2.5",
+		"msgpack5": "^4.2.1",
 		"nodemailer": "^6.4.6",
 		"passport": "^0.4.1",
 		"passport-google-oauth20": "^2.0.0",
@@ -35,8 +36,8 @@
 		"react-router-dom": "^5.1.2",
 		"socket.io": "^2.3.0",
 		"socket.io-client": "^2.3.0",
-		"uws": "^100.0.1",
-		"uuidv4": "^6.1.0"
+		"uuidv4": "^6.1.0",
+		"uws": "^100.0.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.0",

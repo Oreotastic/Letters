@@ -37,8 +37,9 @@ socketIo.on('connection', (client) => {
     client.join(room)
     socketIo.emit('joined room ' + room)
   })
-  client.on('chat message', (room, msg, user) => {
-    socketIo.in(room).emit('chat message', room, msg, user)
+  client.on('chat message', (data) => {
+    socketIo.in(room).emit('chat message', data)
+
     if(user.id !== user) {
       console.log(room, msg, user)
     }

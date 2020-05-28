@@ -28,7 +28,6 @@ const Replies = ({setRoom, room, msgs, setMsgs, user, updateThread, myLetter, se
       })
   }, [])
 
-
   const socketEmit = (msg) => {
     if(msg !== '') {
       const socket = socketIOClient(ENDPOINT)

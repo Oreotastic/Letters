@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import {Button, ThemeProvider, createMuiTheme} from '@material-ui/core'
-import {cyan} from '@material-ui/core/colors'
 import axios from 'axios'
 import Home from './Home'
 import Login from './Login'
 import Profile from './Profile'
 import Replies from './Replies'
 import socketIOClient from 'socket.io-client'
+import msgpack from 'msgpack5'
 
 const ENDPOINT = 'http://localhost:3000/'
 
@@ -19,15 +19,7 @@ const App = () => {
   const [user, setUser] = useState('')
   const [myLetter, setMyLetter] = useState('')
   const [msgs, setMsgs] = useState([])
-  const [response, setResponse] = useState('')
   const [room, setRoom] = useState('')
-
-  useEffect(() => {
-    const socket = socketIOClient(ENDPOINT)
-    socket.on("FromAPI", data => {
-      setResponse(data)
-    })
-  }, [])
 
   socket.emit('jointhread', room)
   socket.on('chat message', (room, msg, userId) => {
