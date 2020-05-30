@@ -35,15 +35,12 @@ const socketIo = io(server)
 socketIo.on('connection', (client) => {
   console.log('new user connected')
   client.on('jointhread', (room) => {
+    
     client.join(room)
     socketIo.emit('joined room ' + room)
   })
-  client.on('chat message', (data) => {
-    socketIo.in(room).emit('chat message', data)
-
-    if(user.id !== user) {
-      console.log(room, msg, user)
-    }
+  client.on('chat message', (room, msg, user) => {
+    socketIo.in(room).emit('chat message', room, msg, user)
   })
   client.on('disconnect', () => {
     console.log('Client disconnected')
