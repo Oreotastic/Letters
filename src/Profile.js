@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import { Link } from 'react-router-dom'
+import {CircularProgress, Tabs, Tab} from '@material-ui/core'
+import SentReceived from './SentReceived'
 import axios from 'axios'
 
 const Profile = ({user}) => {
@@ -31,45 +32,12 @@ const Profile = ({user}) => {
   return (
     <div>
       <h2>Welcome {user.name}</h2>
-      <ul>
-        <div>
-          <h5>Started</h5>
-          <CircularProgress className="progress-circle hidden"/>
-          {
-            sent.map(thread => {
-                return (
-                  <Link key={thread.id} to={`/thread/${thread.id}`}>
-                    <li>
-                      <p>
-                        {thread.msgs[thread.msgs.length-1].reply}
-                      </p>
-                    </li>
-                  </Link>
-                )
-            })
-          }
-        </div>
-        <div>
-          <h5>Recieved</h5>
-          {
-            received.map(thread => {
-                return (
-                  <Link key={thread.id} to={`/thread/${thread.id}`}>
-                    <li>
-                      <p>
-                        {thread.msgs[thread.msgs.length-1].reply}
-                      </p>
-                    </li>
-                  </Link>
-                )
-            })
-          }
-        </div>
-      </ul>
-     
+      <div>
+        <CircularProgress className="progress-circle hidden"/>      
+        <SentReceived received={received} sent={sent}/>
+      </div>
     </div>
   )
-  
 }
 
 export default Profile

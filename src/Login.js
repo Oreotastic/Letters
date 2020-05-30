@@ -7,7 +7,7 @@ const Login = ({theme, ThemeProvider}) => {
     <div>
       <a href="/auth/google">
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color="primary">Login With Google</Button>
+          <Button variant="outlined" color="primary">Login With Google</Button>
         </ThemeProvider>
       </a>
     </div>
