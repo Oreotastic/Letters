@@ -1,15 +1,26 @@
 import React, {useState} from 'react'
-import {Tabs, Tab} from '@material-ui/core'
+import {Tabs, Tab, ThemeProvider, createMuiTheme} from '@material-ui/core'
 import Received from './Received'
 import Sent from './Sent'
 
 const SentReceived = ({received, sent}) => {
+
   const [tabIndex, setTabIndex] = useState(0)
 
   const handleChange = (event, newValue) => {
     setTabIndex(newValue);
   }
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#89DAFF'
+      },
+      secondary: {
+        main: '#D65CB1'
+      }
+    }
+  })
   return (
     <>
       <Tabs value={tabIndex} onChange={handleChange}>
@@ -18,8 +29,10 @@ const SentReceived = ({received, sent}) => {
         <Tab label="Sent">
         </Tab>
       </Tabs>
-      {tabIndex === 0 && <Received received={received} />}
-      {tabIndex === 1 && <Sent sent={sent} />}
+      <ThemeProvider theme={theme}>
+        {tabIndex === 0 && <Received received={received} />}
+        {tabIndex === 1 && <Sent sent={sent} />}
+      </ThemeProvider>
     </>
   )
 }

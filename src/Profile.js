@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Link } from 'react-router-dom'
-import {CircularProgress, Tabs, Tab} from '@material-ui/core'
+import {CircularProgress} from '@material-ui/core'
 import SentReceived from './SentReceived'
 import axios from 'axios'
 
