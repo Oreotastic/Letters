@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import {Button, ThemeProvider, createMuiTheme} from '@material-ui/core'
+import {Button, ThemeProvider, createMuiTheme, AppBar} from '@material-ui/core'
+import socketIOClient from 'socket.io-client'
 import axios from 'axios'
 import Home from './Home'
 import Login from './Login'
 import Profile from './Profile'
 import Replies from './Replies'
-import socketIOClient from 'socket.io-client'
 
 const ENDPOINT = 'http://localhost:3000/'
 
@@ -107,22 +107,24 @@ const App = () => {
       primary: {
         main: '#89DAFF'
       },
+      secondary: {
+        main: '#D65CB1'
+      }
     }
   })
 
   return (
     <div>
       <Router>
-        <header>
-          <nav>
+        <ThemeProvider theme={theme}>
+          <AppBar position={"relative"} color="secondary">
+            <nav>
               {
                 user === '' ? 
                 <ul className="navbar">
                   <li>
                     <Link to="/">
-                      <ThemeProvider theme={theme}>
-                        <Button variant="contained" color="primary">Home</Button>
-                      </ThemeProvider>
+                        <Button variant="outlined" color="primary">Home</Button>
                     </Link>
                   </li>
                   <li>
@@ -130,32 +132,27 @@ const App = () => {
                   </li>
                 </ul>
                   :
-                <ul className="navbar">
+                  <ul className="navbar">
                   <li>
                     <Link to="/profile">
-                      <ThemeProvider theme={theme}>
-                        <Button variant="contained" color="primary">Profile</Button>
-                      </ThemeProvider>
+                      <Button variant="outlined" color="primary">Profile</Button>
                     </Link>
                   </li>
                   <li>
                     <Link to="/">
-                      <ThemeProvider theme={theme}>
-                        <Button variant="contained" color="primary">Home</Button>
-                      </ThemeProvider>
+                      <Button variant="outlined" color="primary">Home</Button>
                     </Link>
                   </li>
                   <li>
                     <a href="/auth/logout">
-                      <ThemeProvider theme={theme}>
-                        <Button variant="contained" color="primary">Logout</Button>
-                      </ThemeProvider>
+                      <Button variant="outlined" color="primary">Logout</Button>
                     </a>
                   </li>
                 </ul>
               }
-          </nav>
-        </header>
+            </nav>
+          </AppBar>
+        </ThemeProvider>
 
         <div id="app" className="container">
           <Switch>
