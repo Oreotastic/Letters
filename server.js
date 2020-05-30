@@ -2,13 +2,14 @@ const express = require('express')
 const app = express()
 const db = require('./db')
 const path = require('path')
+const keys = require('./config/keys')
+
 const passport = require('passport')
 const cookieSession = require('cookie-session')
-let io = require('socket.io')
-const http = require('http')
-
 const passportSetup = require('./config/passport-setup')
-const keys = require('./config/keys')
+
+const io = require('socket.io')
+const http = require('http')
 
 const port = process.env.PORT || 3000;
 
