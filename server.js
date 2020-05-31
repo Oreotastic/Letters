@@ -100,12 +100,6 @@ app.post('/api/replies', (req, res, next) => {
     .catch(next)
 })
 
-app.get('/api/replies', (req, res, next) => {
-  db.getReplies()
-    .then(response => res.send(response))
-    .catch(next)
-})
-
 app.get('/api/replies/:id', (req, res, next) => {
   const myId = req.params.id
   db.getMyReplies(myId)
@@ -123,12 +117,6 @@ app.get('/api/sentThreads/:id', (req, res, next) => {
 app.get('/api/receivedThreads/:id', (req, res, next) => {
   const id = req.params.id
   db.getReceivedThreads(id)
-    .then(response => res.send(response))
-    .catch(next)
-})
-
-app.get('/api/threads', (req, res, next) => {
-  db.getThreads()
     .then(response => res.send(response))
     .catch(next)
 })
