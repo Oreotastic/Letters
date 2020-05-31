@@ -43,7 +43,7 @@ const sync = async() => {
       read BOOL DEFAULT 'false'
     );
 
-    INSERT INTO letters(message) VALUES('this is a test :)');
+    INSERT INTO letters(message) VALUES('Welcome!');
   `
 
   await client.query(sql)
